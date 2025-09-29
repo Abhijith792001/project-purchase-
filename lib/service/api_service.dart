@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:project/service/common_interceptors.dart';
 
 class ApiService {
-  static const String baseUrl = ' https://mycampus.amrita.edu/api/method/';
+  static const String baseUrl = 'https://mycampus.amrita.edu/api/method/';
   final Map<String, String> headers = {
     'Authorization': 'Token 7218b5303551b14:beb5459d640b721',
     'Content-Type': 'application/json',

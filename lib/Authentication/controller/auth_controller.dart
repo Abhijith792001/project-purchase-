@@ -1,12 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as appDio;
+import 'package:project/Authentication/model/login_model.dart';
 import 'package:project/routes/app_routes.dart';
 import 'package:project/service/api_service.dart';
 import 'package:project/utils/storage_manger.dart';
-
 
 class AuthController extends GetxController {
   final ApiService apiService = ApiService();
@@ -16,39 +15,38 @@ class AuthController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxString isLoggedIn = ''.obs;
 
+  var loginData = Rxn<LoginModel>(); // ✅ fixed
+
   Future<void> login(String email, String password) async {
-    final payLoad = {'login_name': email, 'password': password};
+    final payLoad = {'usr': email, 'pwd': password};
 
     try {
       isLoading.value = true;
 
-      
-
       final appDio.Response? response = await apiService.postApi('login', payLoad);
-
 
       if (response != null && response.statusCode == 200) {
         final userData = response.data;
 
-        // final loginData = LoginResponseModel.fromJson(userData);
+        // ✅ parse json into model
+        loginData.value = LoginModel.fromJson(userData);
 
-        // await appStorage.write('role', loginData.role.role);
-
-        
-        // Optional: Save user data if needed
-         await appStorage.write('isLoggedIn', 'true');
-
+        // ✅ save in storage
+        await appStorage.write('isLoggedIn', 'true');
+        await appStorage.write('userEmail', email);
         await appStorage.write('userData', jsonEncode(userData));
+        await appStorage.write('fullName', loginData.value?.fullName ?? "");
+        await appStorage.write('homePage', loginData.value?.homePage ?? "");
 
-        // await appStorage.write('role', value)
-
-        // isLoggedIn.value =  await appStorage.read('isLoggedIn');
+        // update state
+        currentUser.value = loginData.value?.fullName ?? "";
+        isLoggedIn.value = 'true';
 
         Get.offAllNamed(AppRoutes.homePage);
 
         Get.snackbar(
           'Success',
-          'Login Successful',
+          'Welcome ${loginData.value?.fullName ?? "User"}!',
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.green.shade600,
           colorText: Colors.white,

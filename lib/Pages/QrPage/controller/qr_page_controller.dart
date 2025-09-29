@@ -40,7 +40,7 @@ class QrPageController extends GetxController {
     // Navigate directly to profile page with scanned QR value
     if (Get.context != null) {
       Get.offNamed(
-        AppRoutes.profilePage,
+        AppRoutes.indentPage,
         arguments: {'scannedValue': scannedValue.value},
       );
     } else {

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:project/QrPage/controller/qr_page_controller.dart';
+import 'package:project/Pages/QrPage/controller/qr_page_controller.dart';
 import 'package:project/routes/app_routes.dart';
 
 class QrPage extends StatelessWidget {

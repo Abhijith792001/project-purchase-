@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:project/QrPage/controller/qr_page_controller.dart';
+import 'package:project/Pages/QrPage/controller/qr_page_controller.dart';
 import 'package:project/service/api_service.dart';
 
 

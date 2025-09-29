@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:project/routes/app_routes.dart';
 import 'package:project/widgets/primary_btn.dart';
 
 class HomePage extends StatelessWidget {
@@ -72,7 +73,7 @@ class HomePage extends StatelessWidget {
                       Image.asset('assets/images/home_img.png', width: 250),
                       SizedBox(height: 20.h),
                       Text(
-                        'Welcome – Swagatham 2025',
+                        'Purchase Indent 2025',
                         style: TextStyle(
                           fontSize: 16.87.sp,
                           fontWeight: FontWeight.w600,
@@ -80,7 +81,7 @@ class HomePage extends StatelessWidget {
                       ),
                       SizedBox(height: 6.h),
                       Text(
-                        'Scan student QR codes to instantly view their \nname, photo, roll number, and key details. A \nfast, simple, and efficient way to access \nstudent info on the go. ',
+                     "Register purchase requests and trackapprovals easily. \nView item details, approval status, and key \ninformation instantly.A fast, simple, and \nefficient way to manage purchases \non the go.",
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
@@ -95,9 +96,9 @@ class HomePage extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () => {
-                              // Get.toNamed(AppRoutes.qrPage)
+                              Get.toNamed(AppRoutes.qrPage)
                             },
-                            child: PrimaryBtn(btnText: "Scan the button"),
+                            child: PrimaryBtn(btnText: "Scan the Indent"),
                           ),
                           SizedBox(height: 15.h),
                           InkWell(
