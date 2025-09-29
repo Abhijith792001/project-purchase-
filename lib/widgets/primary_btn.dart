@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:project/app_theme.dart';
+import 'package:project/theme/app_theme.dart';
 
 class PrimaryBtn extends StatelessWidget {
   PrimaryBtn({super.key, required this.btnText});
