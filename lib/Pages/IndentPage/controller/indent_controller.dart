@@ -261,6 +261,46 @@ class IndentController extends GetxController {
     );
   }
 
+  Future<void> returned(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // can't close by tapping outside
+      builder: (context) {
+        // Auto close after 2 sec
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+          // Get.offAllNamed(AppRoutes.homePage);
+        });
+
+        return Dialog(
+          backgroundColor: AppTheme.whiteColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ✅ Animated success tick
+                SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Lottie.asset('assets/rejected.json', repeat: false),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  "Returned !",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   //Purchase user
 
   Future<void> purchaseIn(String indentId) async {

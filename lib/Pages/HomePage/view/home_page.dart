@@ -82,7 +82,7 @@ class HomePage extends GetView<HomeController> {
                       ),
                       SizedBox(height: 6.h),
                       Text(
-                     "Register purchase requests and trackapprovals easily. \nView item details, approval status, and key \ninformation instantly.A fast, simple, and \nefficient way to manage purchases \non the go.",
+                        "Register purchase requests and trackapprovals easily. \nView item details, approval status, and key \ninformation instantly.A fast, simple, and \nefficient way to manage purchases \non the go.",
                         style: TextStyle(
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
@@ -96,22 +96,20 @@ class HomePage extends GetView<HomeController> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           InkWell(
-                            onTap: () => {
-                              Get.toNamed(AppRoutes.qrPage)
-                            },
+                            onTap: () => {Get.toNamed(AppRoutes.qrPage)},
                             child: PrimaryBtn(btnText: "Scan the Indent"),
                           ),
                           SizedBox(height: 15.h),
-                          InkWell(
-                            onTap: () {
-                              // Get.toNamed(AppRoutes.instructionPage);
-                            },
-                            child: Chip(
-                              backgroundColor: Colors.grey.shade100,
-                              avatar: Icon(LucideIcons.searchCode, size: 18),
-                              label: Text('Manual Searching'),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     // Get.toNamed(AppRoutes.instructionPage);
+                          //   },
+                          //   child: Chip(
+                          //     backgroundColor: Colors.grey.shade100,
+                          //     avatar: Icon(LucideIcons.searchCode, size: 18),
+                          //     label: Text('Manual Searching'),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ],
