@@ -20,12 +20,19 @@ class IndentController extends GetxController {
   RxString userRole = "".obs;
   RxString btnTxt = ''.obs;
   RxString statusUpdate = ''.obs;
+  RxString userMail = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     scannedValue.value = Get.arguments['scannedValue'];
     getIndentDetails(scannedValue.value);
+    mailGetting();
+  }
+
+  mailGetting() async {
+    userMail.value = await appStorage.read('userEmail');
+    print('mail of user ${userMail.value}');
   }
 
   Future<void> getIndentDetails(String indentId) async {
@@ -57,22 +64,6 @@ class IndentController extends GetxController {
       isLoading.value = false;
     }
   }
-
-  // Future<void> indentSumbit(String indentId)async{
-
-  //     final payLoad = {
-  //     "id": indentId,
-  //     "status_update":"Registrar In"
-  //   };
-  //   isLoading.value = true;
-
-  //   try{
-  //      appDio.Response  response = await apiService.postApi('set_indent_status_registrar', payLoad);
-  //      if(response.statusCode == 200){
-
-  //      }
-  //   }
-  // }
 
   Future<void> buttonSubmit(BuildContext context) async {
     showDialog(
@@ -115,5 +106,47 @@ class IndentController extends GetxController {
         );
       },
     );
+  }
+
+  Future<void> registerIn(String indentId) async {
+    final payLoad = {"id": indentId, "status_update": "Registrar In"};
+    isLoading.value = true;
+
+    try {
+      appDio.Response response = await apiService.postApi(
+        'set_indent_status_registrar',
+        payLoad,
+      );
+      if (response.statusCode == 200) {
+        print('Registrar update successful for');
+      } else {
+        print("⚠️ Unexpected response: ");
+      }
+    } catch (e) {
+      print("❌ Unexpected error: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> afterRegisterIn(String indentId, String status) async {
+    final payLoad = {"id": indentId, "status_update": status};
+    isLoading.value = true;
+
+    try {
+      appDio.Response response = await apiService.postApi(
+        'set_indent_status_registrar',
+        payLoad,
+      );
+      if (response.statusCode == 200) {
+        print('Registrar update successful for');
+      } else {
+        print("⚠️ Unexpected response: ");
+      }
+    } catch (e) {
+      print("❌ Unexpected error: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

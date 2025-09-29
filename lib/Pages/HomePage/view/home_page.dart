@@ -3,10 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:project/Pages/HomePage/controller/home_controller.dart';
 import 'package:project/routes/app_routes.dart';
 import 'package:project/widgets/primary_btn.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        // controller.logOut();
+                        controller.logOut();
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),

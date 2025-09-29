@@ -20,7 +20,8 @@ class IndentPage extends GetView<IndentController> {
           onTap: () {
             controller.buttonSubmit(context);
           },
-          child: DoneBtn(btnText: 'Register In')),
+          child: DoneBtn(btnText: 'Register In'),
+        ),
       ),
       backgroundColor: const Color(0xfff8fafc),
       appBar: AppBar(
@@ -32,7 +33,10 @@ class IndentPage extends GetView<IndentController> {
             color: AppTheme.whiteColor,
             size: 20.w,
           ),
-          onPressed: () => Get.offAllNamed(AppRoutes.homePage),
+          onPressed: () {
+            Get.offAllNamed(AppRoutes.homePage);
+            controller.indentData.value = null;
+          },
         ),
         title: Text(
           'Indent Details',
@@ -86,7 +90,10 @@ class IndentPage extends GetView<IndentController> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 2.h,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.circular(8.r),
@@ -123,68 +130,165 @@ class IndentPage extends GetView<IndentController> {
                     ],
                   ),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      Column(
                         children: [
-                          Expanded(
-                            child: buildCompactField(
-                              "Requestor",
-                              indent.requesterName ?? "N/A",
-                              LucideIcons.user,
-                              const Color(0xff3b82f6),
-                            ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: buildCompactField(
+                                  "Requestor",
+                                  indent.requesterName ?? "N/A",
+                                  LucideIcons.user,
+                                  const Color(0xff3b82f6),
+                                ),
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: buildCompactField(
+                                  "Date",
+                                  indent.dateOfIndent ?? "N/A",
+                                  LucideIcons.calendar,
+                                  const Color(0xff10b981),
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 12.w),
-                          Expanded(
-                            child: buildCompactField(
-                              "Date",
-                              indent.dateOfIndent ?? "N/A",
-                              LucideIcons.calendar,
-                              const Color(0xff10b981),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 12.h),
-
-                      buildCompactField(
-                        "Department",
-                        indent.deptLab ?? "N/A",
-                        LucideIcons.building,
-                        const Color(0xff8b5cf6),
-                      ),
-                      SizedBox(height: 12.h),
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: buildCompactField(
-                              "Net Total",
-                              indent.netTotal != null ? "₹${indent.netTotal}" : "N/A",
-                              LucideIcons.indianRupee,
-                              const Color(0xfff59e0b),
-                            ),
-                          ),
-                          SizedBox(width: 12.w),
-                          Expanded(
-                            child: buildCompactField(
-                              "Status",
-                              indent.indentStatus ?? "N/A",
-                              LucideIcons.circleCheck,
-                              const Color(0xff10b981),
-                            ),
-                          ),
-                        ],
-                      ),
+                          SizedBox(height: 12.h),
                       
+                          buildCompactField(
+                            "Department",
+                            indent.deptLab ?? "N/A",
+                            LucideIcons.building,
+                            const Color(0xff8b5cf6),
+                          ),
+                          SizedBox(height: 12.h),
+                      
+                          Row(
+                            children: [
+                              Expanded(
+                                child: buildCompactField(
+                                  "Net Total",
+                                  indent.netTotal != null
+                                      ? "₹${indent.netTotal}"
+                                      : "N/A",
+                                  LucideIcons.indianRupee,
+                                  const Color(0xfff59e0b),
+                                ),
+                              ),
+                              SizedBox(width: 12.w),
+                              Expanded(
+                                child: buildCompactField(
+                                  "Status",
+                                  indent.indentStatus ?? "N/A",
+                                  LucideIcons.circleCheck,
+                                  const Color(0xff10b981),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 15.h,),
+                          
+                        ],
+                      ),
+                      Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10.w),
+                                decoration: BoxDecoration(
+                                  // gradient: AppTheme.primaryGradient,
+                                  color: AppTheme.successColor,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      LucideIcons.circleCheck,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      'Approve',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10.w),
+                                decoration: BoxDecoration(
+                                  // gradient: AppTheme.primaryGradient,
+                                  color: AppTheme.dangerColor,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      LucideIcons.circleX,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      'Reject',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10.w),
+                                decoration: BoxDecoration(
+                                  gradient: AppTheme.primaryGradient,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      LucideIcons.circleCheck,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                    SizedBox(width: 10.w),
+                                    Text(
+                                      'Cancel',
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                     ],
                   ),
                 ),
               ),
 
               SizedBox(height: 16.h),
-
-              
             ],
           ),
         );
