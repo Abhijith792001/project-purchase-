@@ -22,6 +22,9 @@ class IndentController extends GetxController {
   RxString statusUpdate = ''.obs;
   RxString userMail = ''.obs;
 
+  RxBool regfirstStep = false.obs;
+  RxBool regSecondStep = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -31,14 +34,19 @@ class IndentController extends GetxController {
   }
 
   mailGetting() async {
-    userMail.value = await appStorage.read('userEmail');
-    print('mail of user ${userMail.value}');
+    final mail = await appStorage.read('userEmail');
+
+    if (mail != null && mail.toString().isNotEmpty) {
+      userMail.value = mail.toString();
+      print('mail of user ${userMail.value}');
+    } else {
+      userMail.value = '';
+      print('No user email found');
+    }
   }
 
   Future<void> getIndentDetails(String indentId) async {
-    final payLoad = {
-      "id": indentId, // ✅ fixed
-    };
+    final payLoad = {"id": indentId};
 
     isLoading.value = true;
     try {
@@ -47,10 +55,21 @@ class IndentController extends GetxController {
 
       if (response.data['indent_data'] != null) {
         indentData.value = IndentModel.fromJson(response.data['indent_data']);
-        print("Indent ID: ${indentData.value!.indentId.toString()}");
-        log('statusUpdate ${indentData.value!.indentStatus.toString()}');
+        print("Indent ID: ${indentData.value!.indentId}");
+        log('statusUpdate ${indentData.value!.indentStatus}');
       } else {
         print("No indent data found");
+      }
+
+      final status = indentData.value?.indentStatus;
+
+      /// ✅ Progressive update instead of overwrite
+      if (status == "Submitted") {
+        if (!regfirstStep.value) regfirstStep.value = true;
+      }
+
+      if (status == "Registrar In") {
+        if (!regSecondStep.value) regSecondStep.value = true;
       }
     } catch (e) {
       if (e is appDio.DioException) {
@@ -73,7 +92,7 @@ class IndentController extends GetxController {
         // Auto close after 2 sec
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.of(context).pop(true);
-          Get.offAllNamed(AppRoutes.homePage);
+          // Get.offAllNamed(AppRoutes.homePage);
         });
 
         return Dialog(
@@ -118,7 +137,10 @@ class IndentController extends GetxController {
         payLoad,
       );
       if (response.statusCode == 200) {
-        print('Registrar update successful for');
+        print('Registrar update successful ');
+        Future.delayed(const Duration(seconds: 2), () {
+          Get.offAllNamed(AppRoutes.homePage);
+        });
       } else {
         print("⚠️ Unexpected response: ");
       }
@@ -140,6 +162,10 @@ class IndentController extends GetxController {
       );
       if (response.statusCode == 200) {
         print('Registrar update successful for');
+        Future.delayed(const Duration(seconds: 2), () {
+          // Navigator.of(context).pop(true);
+          Get.offAllNamed(AppRoutes.homePage);
+        });
       } else {
         print("⚠️ Unexpected response: ");
       }
@@ -148,5 +174,88 @@ class IndentController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  Future<void> approve(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // can't close by tapping outside
+      builder: (context) {
+        // Auto close after 2 sec
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+          // Get.offAllNamed(AppRoutes.homePage);
+        });
+
+        return Dialog(
+          backgroundColor: AppTheme.whiteColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ✅ Animated success tick
+                SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Lottie.asset(
+                    'assets/success_tick.json',
+                    repeat: false,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  "Approved!",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> rejected(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // can't close by tapping outside
+      builder: (context) {
+        // Auto close after 2 sec
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+          // Get.offAllNamed(AppRoutes.homePage);
+        });
+
+        return Dialog(
+          backgroundColor: AppTheme.whiteColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ✅ Animated success tick
+                SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Lottie.asset('assets/rejected.json', repeat: false),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  "Rejected!",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

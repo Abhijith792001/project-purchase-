@@ -74,6 +74,7 @@ flutter:
   assets:
     - assets/images/
     - assets/success_tick.json
+    - assets/rejected.json
 
   #   - images/a_dot_ham.jpeg
 

@@ -14,15 +14,15 @@ class IndentPage extends GetView<IndentController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        color: AppTheme.whiteColor,
-        child: InkWell(
-          onTap: () {
-            controller.buttonSubmit(context);
-          },
-          child: DoneBtn(btnText: 'Register In'),
-        ),
-      ),
+      // bottomNavigationBar: controller.regfirstStep.value == true
+      //     ? BottomAppBar(
+      //         color: AppTheme.whiteColor,
+      //         child: InkWell(
+      //           onTap: () => controller.buttonSubmit(context),
+      //           child: DoneBtn(btnText: 'Register In'),
+      //         ),
+      //       )
+      //     : null,
       backgroundColor: const Color(0xfff8fafc),
       appBar: AppBar(
         elevation: 0,
@@ -156,7 +156,7 @@ class IndentPage extends GetView<IndentController> {
                             ],
                           ),
                           SizedBox(height: 12.h),
-                      
+
                           buildCompactField(
                             "Department",
                             indent.deptLab ?? "N/A",
@@ -164,7 +164,7 @@ class IndentPage extends GetView<IndentController> {
                             const Color(0xff8b5cf6),
                           ),
                           SizedBox(height: 12.h),
-                      
+
                           Row(
                             children: [
                               Expanded(
@@ -188,101 +188,166 @@ class IndentPage extends GetView<IndentController> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 15.h,),
-                          
+                          SizedBox(height: 15.h),
                         ],
                       ),
-                      Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10.w),
-                                decoration: BoxDecoration(
-                                  // gradient: AppTheme.primaryGradient,
-                                  color: AppTheme.successColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(16),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      LucideIcons.circleCheck,
-                                      color: Colors.white,
-                                      size: 15,
+                      SizedBox(height: 20.h),
+                      controller.regfirstStep.value == true &&
+                              controller.userMail.value ==
+                                  "registraroffice@amrita.edu"
+                          ? InkWell(
+                              onTap: () {
+                                controller.registerIn(
+                                  controller.scannedValue.value,
+                                );
+                                controller.buttonSubmit(context);
+                              },
+                              child: DoneBtn(btnText: 'Register In'),
+                            )
+                          : Container(),
+
+                      // this button is used for purchase user
+                      InkWell(
+                        onTap: () {
+                          controller.registerIn(controller.scannedValue.value);
+                          controller.buttonSubmit(context);
+                        },
+                        child: DoneBtn(btnText: 'Purchase In'),
+                      ),
+                      // this button is used for purchase user
+                      controller.regSecondStep == true
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    controller.approve(context);
+                                    controller.afterRegisterIn(
+                                      controller.scannedValue.value,
+                                      'Registrar Approved',
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 15,
+                                      horizontal: 10.w,
                                     ),
-                                    SizedBox(width: 10.w),
-                                    Text(
-                                      'Approve',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
+                                    decoration: BoxDecoration(
+                                      // gradient: AppTheme.primaryGradient,
+                                      color: AppTheme.successColor,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(16),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10.w),
-                                decoration: BoxDecoration(
-                                  // gradient: AppTheme.primaryGradient,
-                                  color: AppTheme.dangerColor,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          LucideIcons.circleCheck,
+                                          color: Colors.white,
+                                          size: 15,
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Text(
+                                          'Approve',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      LucideIcons.circleX,
-                                      color: Colors.white,
-                                      size: 15,
+                                InkWell(
+                                  onTap: () {
+                                    controller.rejected(context);
+                                    controller.afterRegisterIn(
+                                      controller.scannedValue.value,
+                                      'Rejected',
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 15,
+                                      horizontal: 10.w,
                                     ),
-                                    SizedBox(width: 10.w),
-                                    Text(
-                                      'Reject',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
+                                    decoration: BoxDecoration(
+                                      // gradient: AppTheme.primaryGradient,
+                                      color: AppTheme.dangerColor,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(16),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10.w),
-                                decoration: BoxDecoration(
-                                  gradient: AppTheme.primaryGradient,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          LucideIcons.circleX,
+                                          color: Colors.white,
+                                          size: 15,
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Text(
+                                          'Reject',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      LucideIcons.circleCheck,
-                                      color: Colors.white,
-                                      size: 15,
+                                InkWell(
+                                  onTap: () {
+                                    controller.rejected(context);
+                                    controller.afterRegisterIn(
+                                      controller.scannedValue.value,
+                                      'Returned',
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 15,
+                                      horizontal: 10.w,
                                     ),
-                                    SizedBox(width: 10.w),
-                                    Text(
-                                      'Cancel',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
+                                    decoration: BoxDecoration(
+                                      gradient: AppTheme.primaryGradient,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(16),
                                       ),
                                     ),
-                                  ],
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          LucideIcons.circleCheck,
+                                          color: Colors.white,
+                                          size: 15,
+                                        ),
+                                        SizedBox(width: 10.w),
+                                        Text(
+                                          'Returned',
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            )
+                          : Container(),
+                      SizedBox(height: 10.h),
                     ],
                   ),
                 ),
