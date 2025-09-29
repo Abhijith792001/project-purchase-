@@ -207,13 +207,52 @@ class IndentPage extends GetView<IndentController> {
                           : Container(),
 
                       // this button is used for purchase user
-                      InkWell(
-                        onTap: () {
-                          controller.registerIn(controller.scannedValue.value);
-                          controller.buttonSubmit(context);
-                        },
-                        child: DoneBtn(btnText: 'Purchase In'),
-                      ),
+                      (controller.indentData.value?.indentStatus !=
+                                  "PO Released" &&
+                              controller.indentData.value?.indentStatus !=
+                                  "Submitted" &&
+                              controller.indentData.value?.indentStatus !=
+                                  "Registrar In" &&
+                              controller.purchaseFirstStep.value == true &&
+                              controller.userMail.value ==
+                                  "purchaseteam@amrita.edu" &&
+                              controller.indentData.value?.indentStatus !=
+                                  "Purchase In")
+                          ? InkWell(
+                              onTap: () {
+                                controller.purchaseIn(
+                                  controller.scannedValue.value,
+                                );
+                                controller.purchaseDone(context);
+                              },
+                              child: DoneBtn(btnText: 'Purchase In'),
+                            )
+                          : const SizedBox.shrink(),
+
+                      // this button is used for purchase user
+                      // this button is used for purchase user
+                      (controller.indentData.value?.indentStatus !=
+                                  "PO Released") &&
+                              controller.indentData.value?.indentStatus !=
+                                  "Submitted" &&
+                              controller.indentData.value?.indentStatus !=
+                                  "Registrar In" &&
+                              controller.purchaseFirstStep.value == true &&
+                              controller.userMail.value ==
+                                  "purchaseteam@amrita.edu" &&
+                              controller.indentData.value?.indentStatus ==
+                                  "Purchase In"
+                          ? InkWell(
+                              onTap: () {
+                                controller.poReleased(
+                                  controller.scannedValue.value,
+                                );
+                                controller.poPurchaseDone(context);
+                              },
+                              child: DoneBtn(btnText: 'PO Released'),
+                            )
+                          : Container(),
+
                       // this button is used for purchase user
                       controller.regSecondStep == true
                           ? Row(

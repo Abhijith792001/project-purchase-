@@ -22,6 +22,8 @@ class IndentController extends GetxController {
   RxString statusUpdate = ''.obs;
   RxString userMail = ''.obs;
 
+  RxBool purchaseFirstStep = true.obs;
+  RxBool purchaseSecondStep = false.obs;
   RxBool regfirstStep = false.obs;
   RxBool regSecondStep = false.obs;
 
@@ -249,6 +251,142 @@ class IndentController extends GetxController {
                 const SizedBox(height: 12),
                 const Text(
                   "Rejected!",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  //Purchase user
+
+  Future<void> purchaseIn(String indentId) async {
+    final payLoad = {"id": indentId, "status_update": "Purchase In"};
+    isLoading.value = true;
+
+    try {
+      appDio.Response response = await apiService.postApi(
+        'set_indent_status_purchase',
+        payLoad,
+      );
+      if (response.statusCode == 200) {
+        print('Registrar update successful ');
+        Future.delayed(const Duration(seconds: 2), () {
+          Get.offAllNamed(AppRoutes.homePage);
+        });
+      } else {
+        print("⚠️ Unexpected response: ");
+      }
+    } catch (e) {
+      print("❌ Unexpected error: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> poReleased(String indentId) async {
+    final payLoad = {"id": indentId, "status_update": "PO Released"};
+    isLoading.value = true;
+
+    try {
+      appDio.Response response = await apiService.postApi(
+        'set_indent_status_purchase',
+        payLoad,
+      );
+      if (response.statusCode == 200) {
+        print('Registrar update successful ');
+        Future.delayed(const Duration(seconds: 2), () {
+          Get.offAllNamed(AppRoutes.homePage);
+        });
+      } else {
+        print("⚠️ Unexpected response: ");
+      }
+    } catch (e) {
+      print("❌ Unexpected error: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> purchaseDone(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // can't close by tapping outside
+      builder: (context) {
+        // Auto close after 2 sec
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+          // Get.offAllNamed(AppRoutes.homePage);
+        });
+
+        return Dialog(
+          backgroundColor: AppTheme.whiteColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ✅ Animated success tick
+                SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Lottie.asset(
+                    'assets/success_tick.json',
+                    repeat: false,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  "Purchased In!",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> poPurchaseDone(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // can't close by tapping outside
+      builder: (context) {
+        // Auto close after 2 sec
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.of(context).pop(true);
+          // Get.offAllNamed(AppRoutes.homePage);
+        });
+
+        return Dialog(
+          backgroundColor: AppTheme.whiteColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ✅ Animated success tick
+                SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Lottie.asset(
+                    'assets/success_tick.json',
+                    repeat: false,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  "PO Released Done!",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
